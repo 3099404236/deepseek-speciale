@@ -113,7 +113,7 @@ def read_all_input(first_line):
     """读取所有粘贴的内容（自动检测多行粘贴）"""
     lines = [first_line]
     while True:
-        if select.select([sys.stdin], [], [], 0.03)[0]:
+        if select.select([sys.stdin], [], [], 0.05)[0]:
             try:
                 line = sys.stdin.readline()
                 if line:
@@ -125,28 +125,8 @@ def read_all_input(first_line):
         else:
             break
 
-    # 如果检测到多行，等待用户确认或继续输入
     if len(lines) > 1:
-        print(f"{Colors.DIM}已读取 {len(lines)} 行，按 Enter 发送或继续输入...{Colors.RESET}")
-        while True:
-            if select.select([sys.stdin], [], [], 0.05)[0]:
-                try:
-                    line = sys.stdin.readline().rstrip('\n')
-                    if line:
-                        lines.append(line)
-                    else:
-                        break
-                except:
-                    break
-            else:
-                try:
-                    line = input().rstrip('\n')
-                    if line:
-                        lines.append(line)
-                    else:
-                        break
-                except:
-                    break
+        print(f"{Colors.DIM}已读取 {len(lines)} 行{Colors.RESET}")
 
     return '\n'.join(lines)
 
