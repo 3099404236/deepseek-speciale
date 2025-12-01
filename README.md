@@ -50,6 +50,7 @@ deepseeks
 | `new` | New chat |
 | `sessions` | Session menu |
 | `lang` | Switch language |
+| `file <path>` | Send file content |
 | `help` | Help |
 
 ### API Pricing
@@ -104,6 +105,7 @@ deepseeks
 | `new` | 新对话 |
 | `sessions` | 会话菜单 |
 | `lang` | 切换语言 |
+| `file <路径>` | 发送文件内容 |
 | `help` | 帮助 |
 
 ### API 价格

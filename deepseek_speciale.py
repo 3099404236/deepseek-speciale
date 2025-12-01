@@ -7,6 +7,7 @@ DeepSeek V3.2-Speciale CLI
 import os
 import sys
 import json
+import select
 from datetime import datetime
 from pathlib import Path
 
@@ -62,7 +63,9 @@ LANG = {
         "messages": "条",
         "commands": "命令",
         "lang_switched": "已切换为中文",
-        "paste_tip": "提示: 粘贴多行请先合并为一行",
+        "paste_tip": "支持直接粘贴多行文本",
+        "file_loaded": "已读取文件",
+        "file_not_found": "文件不存在",
     },
     "en": {
         "title": "DeepSeek V3.2-Speciale",
@@ -92,7 +95,9 @@ LANG = {
         "messages": "msgs",
         "commands": "Commands",
         "lang_switched": "Switched to English",
-        "paste_tip": "Tip: Merge multi-line text before pasting",
+        "paste_tip": "Multi-line paste supported",
+        "file_loaded": "File loaded",
+        "file_not_found": "File not found",
     }
 }
 
@@ -103,6 +108,47 @@ def t(key):
 
 def p(text, color=Colors.RESET):
     print(f"{color}{text}{Colors.RESET}")
+
+def read_all_input(first_line):
+    """读取所有粘贴的内容（自动检测多行粘贴）"""
+    lines = [first_line]
+    while True:
+        if select.select([sys.stdin], [], [], 0.03)[0]:
+            try:
+                line = sys.stdin.readline()
+                if line:
+                    lines.append(line.rstrip('\n'))
+                else:
+                    break
+            except:
+                break
+        else:
+            break
+
+    # 如果检测到多行，等待用户确认或继续输入
+    if len(lines) > 1:
+        print(f"{Colors.DIM}已读取 {len(lines)} 行，按 Enter 发送或继续输入...{Colors.RESET}")
+        while True:
+            if select.select([sys.stdin], [], [], 0.05)[0]:
+                try:
+                    line = sys.stdin.readline().rstrip('\n')
+                    if line:
+                        lines.append(line)
+                    else:
+                        break
+                except:
+                    break
+            else:
+                try:
+                    line = input().rstrip('\n')
+                    if line:
+                        lines.append(line)
+                    else:
+                        break
+                except:
+                    break
+
+    return '\n'.join(lines)
 
 def load_config():
     config = {"api_key": os.environ.get("DEEPSEEK_API_KEY", ""), "lang": "zh"}
@@ -216,7 +262,7 @@ def help_cmd():
     cmds = [
         ("q/exit", "Exit"), ("clear", "Clear chat"), ("think", "Toggle thinking"),
         ("show", "Show thinking"), ("new", "New chat"), ("sessions", "Session menu"),
-        ("lang", "Switch language"), ("help", "Help")
+        ("lang", "Switch language"), ("file <path>", "Send file content"), ("help", "Help")
     ]
     for c, d in cmds:
         p(f"  {c:12} {d}", Colors.DIM)
@@ -260,10 +306,13 @@ def main():
 
     while True:
         try:
-            inp = input(f"{Colors.GREEN}> {Colors.RESET}").strip()
-            if not inp: continue
+            first_line = input(f"{Colors.GREEN}> {Colors.RESET}").strip()
+            if not first_line: continue
 
-            cmd = inp.lower()
+            # 自动检测多行粘贴
+            inp = read_all_input(first_line)
+
+            cmd = inp.split('\n')[0].lower()  # 命令只看第一行
             if cmd in ['q', 'exit', 'quit']:
                 if msgs: save_session(cf, msgs); p(t('saved'), Colors.DIM)
                 p(t('goodbye'), Colors.CYAN); break
@@ -288,6 +337,22 @@ def main():
                 if msgs: save_session(cf, msgs)
                 cf, msgs, is_new = menu(config)
                 p(t('new_created') if is_new else t('loaded').format(n=len(msgs)), Colors.GREEN); continue
+
+            # 文件输入: file <path>
+            if inp.lower().startswith('file '):
+                fpath = inp[5:].strip()
+                fpath = os.path.expanduser(fpath)  # 支持 ~/
+                if os.path.exists(fpath):
+                    try:
+                        with open(fpath, 'r', encoding='utf-8') as f:
+                            inp = f.read()
+                        p(f"{t('file_loaded')}: {len(inp)} chars", Colors.GREEN)
+                    except Exception as e:
+                        p(f"{t('error')}: {e}", Colors.RED)
+                        continue
+                else:
+                    p(f"{t('file_not_found')}: {fpath}", Colors.RED)
+                    continue
 
             msgs.append({"role": "user", "content": inp})
             print()
