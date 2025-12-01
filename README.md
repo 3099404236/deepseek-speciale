@@ -2,6 +2,8 @@
 
 [English](#english) | [中文](#中文)
 
+> **Platform: Linux / macOS only** (Windows not supported)
+
 ---
 
 ## English
@@ -9,6 +11,8 @@
 ⚠️ **Temporary Version - Expires 2025-12-15**
 
 Command-line tool for DeepSeek V3.2-Speciale reasoning model.
+
+**Supported platforms:** Linux, macOS
 
 ### Features
 
@@ -59,6 +63,8 @@ deepseeks
 ⚠️ **临时版本 - 有效期至 2025-12-15**
 
 DeepSeek V3.2-Speciale 推理模型命令行工具。
+
+**支持平台:** Linux, macOS (不支持 Windows)
 
 ### 特点
 
