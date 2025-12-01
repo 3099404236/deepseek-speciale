@@ -10,7 +10,9 @@
 
 ⚠️ **Temporary Version - Expires 2025-12-15**
 
-Command-line tool for DeepSeek V3.2-Speciale reasoning model.
+### Why this project?
+
+DeepSeek V3.2-Speciale is currently **not compatible with Claude Code, Codex, and similar AI coding assistants**. This CLI tool provides a simple way to access the V3.2-Speciale model directly from your terminal.
 
 **Supported platforms:** Linux, macOS
 
@@ -62,7 +64,9 @@ deepseeks
 
 ⚠️ **临时版本 - 有效期至 2025-12-15**
 
-DeepSeek V3.2-Speciale 推理模型命令行工具。
+### 为什么做这个项目？
+
+DeepSeek V3.2-Speciale 目前**不兼容 Claude Code、Codex 等 AI 编程助手**，所以做了这个命令行工具，方便直接在终端使用 V3.2-Speciale 模型。
 
 **支持平台:** Linux, macOS (不支持 Windows)
 
