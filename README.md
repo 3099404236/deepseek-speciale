@@ -27,16 +27,19 @@ DeepSeek V3.2-Speciale is currently **not compatible with Claude Code, Codex, an
 ### Installation
 
 ```bash
+# Install directly from source
+uv tool install git+https://github.com/3099404236/deepseek-speciale.git
+
+# Or clone and install locally
 git clone https://github.com/3099404236/deepseek-speciale.git
 cd deepseek-speciale
-pip install -r requirements.txt
-./install.sh
+uv tool install .
 ```
 
 ### Usage
 
 ```bash
-deepseeks
+deepseek-speciale
 ```
 
 ### Commands
@@ -82,16 +85,19 @@ DeepSeek V3.2-Speciale 目前**不兼容 Claude Code、Codex 等 AI 编程助手
 ### 安装
 
 ```bash
+# 直接从源码安装
+uv tool install git+https://github.com/3099404236/deepseek-speciale.git
+
+# 或者克隆后本地安装
 git clone https://github.com/3099404236/deepseek-speciale.git
 cd deepseek-speciale
-pip install -r requirements.txt
-./install.sh
+uv tool install .
 ```
 
 ### 使用
 
 ```bash
-deepseeks
+deepseek-speciale
 ```
 
 ### 命令

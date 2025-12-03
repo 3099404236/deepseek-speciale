@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deepseek-speciale"
+version = "0.1.0"
+description = "DeepSeek V3.2-Speciale CLI"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "openai>=1.0.0",
+]
+
+[project.scripts]
+deepseek-speciale = "deepseek_speciale:main"
+
+
+[tool.setuptools]
+py-modules = ["deepseek_speciale"]
